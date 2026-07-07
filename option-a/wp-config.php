@@ -1,6 +1,6 @@
 <?php
 /**
- * SinCity — wp-config.php for Render.com (PHP Web Service)
+ * SinCity — wp-config.php for Render.com (Docker + MySQL)
  *
  * Reads ALL configuration from environment variables.
  * No hardcoded secrets. Safe to commit to Git.
@@ -10,9 +10,32 @@
 define('DB_NAME',     getenv('DB_NAME')     ?: 'sincity');
 define('DB_USER',     getenv('DB_USER')     ?: 'sincity');
 define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
-define('DB_HOST',     getenv('DB_HOST')     ?: 'localhost');
+$db_host = getenv('DB_HOST') ?: 'localhost';
+$db_port = getenv('DB_PORT') ?: '3306';
+define('DB_HOST',     $db_host . ':' . $db_port);
 define('DB_CHARSET',  'utf8mb4');
 define('DB_COLLATE',  '');
+
+// ─── Early connection test (better error messages) ────────
+if (defined('WP_INSTALLING') === false && getenv('SKIP_DB_TEST') !== 'true') {
+    $test = @mysqli_connect($db_host, DB_USER, DB_PASSWORD, DB_NAME, (int)$db_port);
+    if (!$test) {
+        $err = mysqli_connect_error();
+        $info = [];
+        $info[] = 'DB_HOST: ' . $db_host;
+        $info[] = 'DB_PORT: ' . $db_port;
+        $info[] = 'DB_NAME: ' . DB_NAME;
+        $info[] = 'DB_USER: ' . DB_USER;
+        $info[] = 'DB_PASSWORD: ' . (DB_PASSWORD ? '(set)' : '(empty)');
+        $info[] = 'Error: ' . $err;
+        http_response_code(503);
+        header('Content-Type: text/plain');
+        echo "Error establishing a database connection.\n\n";
+        echo implode("\n", $info);
+        exit(1);
+    }
+    mysqli_close($test);
+}
 
 // ─── Authentication Salts ─────────────────────────────────
 define('AUTH_KEY',         getenv('AUTH_KEY')         ?: '');
@@ -36,12 +59,11 @@ define('WP_MAX_MEMORY_LIMIT', '256M');
 
 // ─── Security ─────────────────────────────────────────────
 define('DISALLOW_FILE_EDIT', true);
-define('DISALLOW_FILE_MODS', true);  // Prevents plugin/theme install via admin
+define('DISALLOW_FILE_MODS', true);
 define('FORCE_SSL_ADMIN',    getenv('FORCE_SSL') === 'true');
 define('WP_AUTO_UPDATE_CORE', false);
 
 // ─── Cron ─────────────────────────────────────────────────
-// Use cron-job.org to ping /wp-cron.php every 15 min
 define('DISABLE_WP_CRON', getenv('DISABLE_WP_CRON') === 'true');
 
 // ─── Debug ────────────────────────────────────────────────
