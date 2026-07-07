@@ -6,6 +6,11 @@
  * No hardcoded secrets. Safe to commit to Git.
  */
 
+define('WP_HOME', 'https://sincity-web.onrender.com');
+define('WP_SITEURL', 'https://sincity-web.onrender.com');
+define('FORCE_SSL_ADMIN', true);
+define('WP_ALLOW_MULTISITE', false);
+
 // ─── Database ─────────────────────────────────────────────
 define('DB_NAME',     getenv('DB_NAME')     ?: 'sincity');
 define('DB_USER',     getenv('DB_USER')     ?: 'sincity');
