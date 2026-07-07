@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════════════════════════════
+# SinCity — Render Blueprint (Infrastructure as Code)
+# ═══════════════════════════════════════════════════════════════════════
+# How to use:
+#   1. Push this repo to GitHub
+#   2. In Render Dashboard → Blueprint → Connect repo
+#   3. Render auto-creates all services below
+#   4. Fill in env vars (sensitive values)
+# ═══════════════════════════════════════════════════════════════════════
+
+services:
+  # ─── Web Service: WordPress + Nginx + PHP-FPM ─────────────
+  - type: web
+    name: sincity-web
+    env: docker
+    repo: https://github.com/YOUR_USERNAME/sincity
+    branch: main
+    dockerfilePath: ./render/Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz.php
+
+    envVars:
+      - key: WP_HOME
+        value: https://sincity.porn
+      - key: WP_SITEURL
+        value: https://sincity.porn
+      - key: DB_HOST
+        fromService:
+          name: sincity-db
+          type: pserv
+          property: host
+      - key: DB_NAME
+        value: sincity
+      - key: DB_USER
+        value: sincity
+      - key: DB_PASSWORD
+        sync: false  # Will prompt for input
+      - key: FORCE_SSL
+        value: true
+      - key: DISABLE_WP_CRON
+        value: true
+      - key: WP_DEBUG
+        value: false
+      # Generate these at https://api.wordpress.org/secret-key/1.1/salt/
+      - key: AUTH_KEY
+        sync: false
+      - key: SECURE_AUTH_KEY
+        sync: false
+      - key: LOGGED_IN_KEY
+        sync: false
+      - key: NONCE_KEY
+        sync: false
+      - key: AUTH_SALT
+        sync: false
+      - key: SECURE_AUTH_SALT
+        sync: false
+      - key: LOGGED_IN_SALT
+        sync: false
+      - key: NONCE_SALT
+        sync: false
+
+  # ─── PostgreSQL Database ─────────────────────────────────
+  - type: pserv
+    name: sincity-db
+    plan: free
+    env: postgresql
+    version: "16"
+    autoDeploy: false
+
+    envVars:
+      - key: POSTGRES_DB
+        value: sincity
+      - key: POSTGRES_USER
+        value: sincity
+      - key: POSTGRES_PASSWORD
+        sync: false

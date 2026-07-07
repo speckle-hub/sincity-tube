@@ -1,0 +1,15 @@
+Placeholder images for SinCity Child Theme:
+
+Required:
+- logo.png              (SinCity wordmark, 400x80px, transparent PNG)
+- logo-watermark.png    (white logo for player overlay, 200x40px, ~15% opacity white)
+- hero-home.jpg         (homepage hero background, 2400x1000px, 21:9)
+- city-silhouette.png   (skyline overlay for hero, 2400x800px, semi-transparent PNG)
+- cat-normal.jpg        (Normal Porn category card, 800x450px, 16:9)
+- cat-hentai.jpg        (Hentai category card, 800x450px, 16:9)
+- cat-jav.jpg           (JAV category card, 800x450px, 16:9)
+
+Optional:
+- favicon.ico           (32x32 + 16x16 multi-size ICO)
+- favicon-512.png       (512x512 PNG for PWA/manifest)
+- apple-touch-icon.png  (180x180 for iOS)

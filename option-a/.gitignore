@@ -1,0 +1,11 @@
+# SinCity — Option A (Render PHP Web Service)
+.DS_Store
+Thumbs.db
+*.log
+.env
+wp-content/uploads/*
+!wp-content/uploads/.gitkeep
+wp-content/cache/
+wp-content/debug.log
+node_modules/
+vendor/

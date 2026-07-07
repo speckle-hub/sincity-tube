@@ -1,0 +1,43 @@
+# SinCity — Git ignore rules
+# Applies to the full project including Render deployment
+
+# ─── OS files ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+._*
+
+# ─── Config files (generated at deploy time) ──────────────
+# NOTE: wp-config.php is committed (reads from env vars — no secrets)
+.env
+.env.local
+.env.production
+
+# ─── Uploads (ephemeral — not stored in repo) ────────────
+wp-content/uploads/*
+!wp-content/uploads/.gitkeep
+
+# ─── Cache ────────────────────────────────────────────────
+wp-content/cache/
+wp-content/advanced-cache.php
+wp-content/w3tc-config/
+wp-content/et-cache/
+
+# ─── Logs ─────────────────────────────────────────────────
+*.log
+wp-content/debug.log
+wp-content/wp-rocket-config/
+
+# ─── Build artifacts ──────────────────────────────────────
+node_modules/
+vendor/
+*.zip
+*.tar.gz
+package-lock.json
+
+# ─── IDE files ────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

@@ -1,0 +1,13 @@
+SinCity Child Theme — Screenshot Generation Guide
+
+Generate a 1200x900px PNG named "screenshot.png" using this prompt:
+
+"A dark, cinematic website mockup for 'SinCity' adult entertainment brand.
+Left side shows the homepage: neon crimson 'SINCITY' wordmark over a dark
+cyberpunk city skyline with rain and neon lights. Right side shows a video
+grid with 6 thumbnail cards in dark rounded containers. Color palette:
+near-black (#0A0A0F), crimson (#DC143C), neon cyan (#00F0FF). Text in
+serif Cinzel font for headings. Premium, gritty, Vice City aesthetic.
+No explicit nudity — focus on the UI/theme design. 1200x900px."
+
+Save as: sincity-child/screenshot.png (minimum 1200x900, max 4:3 ratio)

@@ -1,0 +1,1 @@
+Render scripts directory — contains healthz.php (copied to web root during Docker build).

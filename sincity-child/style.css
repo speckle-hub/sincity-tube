@@ -1,0 +1,18 @@
+/*
+Theme Name:     SinCity Child
+Theme URI:      https://sincity.porn/
+Description:    Premium adult entertainment hub — dark cyberpunk theme for SinCity tube site.
+Author:         SinCity Dev Team
+Author URI:     https://sincity.porn/
+Template:       kadence
+Version:        1.0.0
+License:        GNU General Public License v3 or later
+License URI:    https://www.gnu.org/licenses/gpl-3.0.html
+Text Domain:    sincity
+Domain Path:    /languages
+
+⚠ This theme contains adult-oriented content and requires age verification.
+*/
+
+/* ─── SinCity overrides — see assets/css/main.css ─────────────────── */
+/* All styles are loaded via enqueue in functions.php */

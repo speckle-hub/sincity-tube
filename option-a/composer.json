@@ -1,0 +1,17 @@
+{
+    "name": "sincity/wordpress",
+    "description": "SinCity adult tube site — WordPress on Render.com",
+    "type": "project",
+    "require": {
+        "php": ">=8.2",
+        "composer/installers": "^2.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+    "scripts": {
+        "post-install-cmd": []
+    }
+}
