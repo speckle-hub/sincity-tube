@@ -40,13 +40,14 @@ sudo chmod -R 755 sincity/
 
 # Database (Supabase PostgreSQL)
 
-**How to find your connection details in Supabase:**
+**How to find your connection details in Supabase (IMPORTANT: Render requires IPv4):**
 1. Go to https://supabase.com and create a new project. Keep the database password safe; you will need it later. Wait a few minutes for the database to provision.
 2. At the very top of your Supabase dashboard, click the green **"Connect"** button.
-3. In the modal that pops up, look at the **Connection string** tab. Select the **URI** or **Parameters** option.
-   - *Host*: Looks like `aws-0-eu-central-1.pooler.supabase.com` or `db.xxxxxxxxxxxxxx.supabase.co`
-   - *Port*: Usually `6543` (for connection pooling) or `5432` (for direct connection). Use `5432` for WordPress.
-   - *User*: Usually `postgres.xxxxxxxxxxxxxx` or `postgres`
+3. In the modal that pops up, look at the **Connection string** tab. Select the **Parameters** option.
+   - **CRITICAL:** Make sure you are using the **Connection Pooler (IPv4)**, NOT the Direct Connection (IPv6). Render does not support IPv6.
+   - *Host*: MUST look like `aws-0-eu-central-1.pooler.supabase.com` (Do NOT use `db.xxxx.supabase.co`).
+   - *Port*: MUST be `6543`.
+   - *User*: MUST include your project ref, looking like `postgres.xxxxxxxxxxxxxx`.
    - *Password*: This is the database password you created in step 1.
 
 **Render Environment Variables:**
