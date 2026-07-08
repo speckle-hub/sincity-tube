@@ -14,9 +14,9 @@
 ### 1.2 Server Setup
 
 ```bash
-# Ubuntu 22.04 LEMP Stack
+# Ubuntu 22.04 LEMP Stack (with PostgreSQL support)
 sudo apt update && sudo apt upgrade -y
-sudo apt install nginx mariadb-server php8.2-fpm php8.2-mysql \
+sudo apt install nginx php8.2-fpm php8.2-pgsql \
   php8.2-curl php8.2-gd php8.2-mbstring php8.2-xml php8.2-zip \
   php8.2-redis redis-server -y
 
@@ -25,12 +25,6 @@ upload_max_filesize = 64M
 post_max_size = 64M
 max_execution_time = 300
 memory_limit = 512M
-
-# MariaDB Tuning (my.cnf)
-innodb_buffer_pool_size = 2G
-innodb_log_file_size = 512M
-query_cache_size = 0
-query_cache_type = 0
 ```
 
 ### 1.3 WordPress Installation
@@ -44,11 +38,24 @@ sudo mv wordpress sincity
 sudo chown -R www-data:www-data sincity/
 sudo chmod -R 755 sincity/
 
-# Create DB
-sudo mysql -e "CREATE DATABASE sincity_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-sudo mysql -e "CREATE USER 'sincity_user'@'localhost' IDENTIFIED BY 'strong_password_here';"
-sudo mysql -e "GRANT ALL ON sincity_db.* TO 'sincity_user'@'localhost';"
-sudo mysql -e "FLUSH PRIVILEGES;"
+# Database (Supabase PostgreSQL)
+
+**How to find your connection details in Supabase:**
+1. Go to https://supabase.com and create a new project. Keep the database password safe; you will need it later. Wait a few minutes for the database to provision.
+2. At the very top of your Supabase dashboard, click the green **"Connect"** button.
+3. In the modal that pops up, look at the **Connection string** tab. Select the **URI** or **Parameters** option.
+   - *Host*: Looks like `aws-0-eu-central-1.pooler.supabase.com` or `db.xxxxxxxxxxxxxx.supabase.co`
+   - *Port*: Usually `6543` (for connection pooling) or `5432` (for direct connection). Use `5432` for WordPress.
+   - *User*: Usually `postgres.xxxxxxxxxxxxxx` or `postgres`
+   - *Password*: This is the database password you created in step 1.
+
+**Render Environment Variables:**
+Add the following to your Render dashboard (Environment tab) or your `.env` file:
+- `DB_HOST`: *(Paste the Host from Supabase)*
+- `DB_PORT`: `5432`
+- `DB_NAME`: `postgres`
+- `DB_USER`: *(Paste the User from Supabase)*
+- `DB_PASSWORD`: *(Type the password you created in Step 1)*
 ```
 
 ### 1.4 Nginx Config

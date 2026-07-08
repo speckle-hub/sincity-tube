@@ -11,35 +11,34 @@ define('WP_SITEURL', 'https://sincity-web.onrender.com');
 define('FORCE_SSL_ADMIN', true);
 define('WP_ALLOW_MULTISITE', false);
 
-// ─── Database ─────────────────────────────────────────────
-define('DB_NAME',     getenv('DB_NAME')     ?: 'sincity');
-define('DB_USER',     getenv('DB_USER')     ?: 'sincity');
+// ─── Database (PostgreSQL / Supabase via PG4WP) ─────────────
+define('DB_NAME',     getenv('DB_NAME')     ?: 'postgres');
+define('DB_USER',     getenv('DB_USER')     ?: 'postgres');
 define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
 $db_host = getenv('DB_HOST') ?: 'localhost';
-$db_port = getenv('DB_PORT') ?: '3306';
+$db_port = getenv('DB_PORT') ?: '5432';
 define('DB_HOST',     $db_host . ':' . $db_port);
+define('DB_DRIVER',   'pgsql');
 define('DB_CHARSET',  'utf8mb4');
 define('DB_COLLATE',  '');
 
 // ─── Early connection test (better error messages) ────────
 if (defined('WP_INSTALLING') === false && getenv('SKIP_DB_TEST') !== 'true') {
-    $test = @mysqli_connect($db_host, DB_USER, DB_PASSWORD, DB_NAME, (int)$db_port);
+    $test = @pg_connect("host=$db_host port=$db_port dbname=" . DB_NAME . " user=" . DB_USER . " password=" . DB_PASSWORD);
     if (!$test) {
-        $err = mysqli_connect_error();
         $info = [];
         $info[] = 'DB_HOST: ' . $db_host;
         $info[] = 'DB_PORT: ' . $db_port;
         $info[] = 'DB_NAME: ' . DB_NAME;
         $info[] = 'DB_USER: ' . DB_USER;
         $info[] = 'DB_PASSWORD: ' . (DB_PASSWORD ? '(set)' : '(empty)');
-        $info[] = 'Error: ' . $err;
         http_response_code(503);
         header('Content-Type: text/plain');
-        echo "Error establishing a database connection.\n\n";
+        echo "Error establishing a database connection to Supabase/PostgreSQL.\n\n";
         echo implode("\n", $info);
         exit(1);
     }
-    mysqli_close($test);
+    pg_close($test);
 }
 
 // ─── Authentication Salts ─────────────────────────────────
