@@ -24,14 +24,17 @@ define('DB_COLLATE',  '');
 
 // ─── Early connection test (better error messages) ────────
 if (defined('WP_INSTALLING') === false && getenv('SKIP_DB_TEST') !== 'true') {
-    $test = @pg_connect("host=$db_host port=$db_port dbname=" . DB_NAME . " user=" . DB_USER . " password=" . DB_PASSWORD);
+    $conn_string = "host=$db_host port=$db_port dbname=" . DB_NAME . " user=" . DB_USER . " password=" . DB_PASSWORD . " sslmode=require";
+    $test = @pg_connect($conn_string);
     if (!$test) {
+        $err = error_get_last();
         $info = [];
         $info[] = 'DB_HOST: ' . $db_host;
         $info[] = 'DB_PORT: ' . $db_port;
         $info[] = 'DB_NAME: ' . DB_NAME;
         $info[] = 'DB_USER: ' . DB_USER;
         $info[] = 'DB_PASSWORD: ' . (DB_PASSWORD ? '(set)' : '(empty)');
+        $info[] = 'Exact Error: ' . ($err ? $err['message'] : 'Unknown error');
         http_response_code(503);
         header('Content-Type: text/plain');
         echo "Error establishing a database connection to Supabase/PostgreSQL.\n\n";
